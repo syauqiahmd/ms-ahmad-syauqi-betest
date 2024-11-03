@@ -4,6 +4,8 @@ const paginationHelper = require('../helpers/paginationHelper');
 const identityHelper = require('../helpers/identityHelper');
 const redisService = require('../services/redisService');
 const { redisKey } = require('../helpers/constHelper');
+const baseResponse = require('../helpers/baseResponse');
+const { userListResponse, userDetailResponse } = require('../helpers/mapResponseHelper');
 
 const addUser = async (req, res) => {
   const {
@@ -23,9 +25,9 @@ const addUser = async (req, res) => {
       identityNumber,
     });
 
-    res.send({ message: `success create user ${user.userName}` });
+    res.send(baseResponse.successResponse());
   } catch (err) {
-    res.send(err);
+    res.send(baseResponse.errorResponse(err));
   }
 };
 
@@ -50,9 +52,9 @@ const getUserList = async (req, res) => {
       limit: pageSize,
     });
 
-    res.send({ data: result });
+    res.send(baseResponse.successResponse(userListResponse(result)));
   } catch (err) {
-    res.send(err);
+    res.send(baseResponse.errorResponse(err));
   }
 };
 
@@ -62,17 +64,19 @@ const getUserDetail = async (req, res) => {
 
     const cachedData = await redisService.getData(`${redisKey.userDetail}_${id}`);
     if (cachedData) {
-      return res.send(cachedData);
+      return res.send(baseResponse.successResponse(cachedData));
     }
 
     const result = await User.findById(id);
-    if (!result) res.send({ data: [] });
+    if (!result) throw new Error('data not found');
 
-    await redisService.setData(`${redisKey.userDetail}_${id}`, { data: result });
+    const response = userDetailResponse(result);
 
-    res.send({ data: result });
+    await redisService.setData(`${redisKey.userDetail}_${id}`, response);
+
+    res.send(baseResponse.successResponse(response));
   } catch (err) {
-    res.send(err.Error);
+    res.send(baseResponse.errorResponse(err));
   }
 };
 
@@ -88,7 +92,7 @@ const updateUser = async (req, res) => {
 
   try {
     const userId = identityHelper.getUserId(req);
-    if (userId !== id) return res.send({ message: 'user only can update own data' });
+    if (userId !== id) throw new Error('user only can update own data');
     const user = await User.findByIdAndUpdate(id, {
       ...userName && { userName },
       ...password && { password: await bcrypt.hash(password, 10) },
@@ -97,14 +101,14 @@ const updateUser = async (req, res) => {
       ...identityNumber && { identityNumber },
     });
 
-    if (!user) return res.send({ data: [] });
+    if (!user) throw new Error('data not found');
 
     await redisService.deleteData(`${redisKey.validToken}_${id}`);
     await redisService.deleteData(`${redisKey.userDetail}_${id}`);
 
-    res.send({ message: `success update user id : ${user._id}` });
+    res.send(baseResponse.successResponse());
   } catch (err) {
-    res.send(err);
+    res.send(baseResponse.errorResponse(err));
   }
 };
 
@@ -112,16 +116,16 @@ const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = identityHelper.getUserId(req);
-    if (userId === id) return res.send({ message: 'user cant delete own data' });
+    if (userId === id) throw new Error('user cant delete own data');
     const user = await User.findByIdAndDelete(id);
-    if (!user) return res.send({ data: [] });
+    if (!user) throw new Error('data not found');
 
     await redisService.deleteData(`${redisKey.validToken}_${id}`);
     await redisService.deleteData(`${redisKey.userDetail}_${id}`);
 
-    res.send({ message: `success delete user id : ${user._id}` });
+    res.send(baseResponse.successResponse());
   } catch (err) {
-    res.send(err.Error);
+    res.send(baseResponse.errorResponse(err));
   }
 };
 

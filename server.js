@@ -11,11 +11,12 @@ const BASE_URL = `http://localhost:${PORT}/${BASE_PATH}`;
 
 const authRoute = require('./routes/authRoute');
 const userRoute = require('./routes/userRoute');
+const { auth } = require('./middleware/auth');
 
 const { connectMongoDb, config: configMongoDb } = require('./services/mongoDbService');
 const { connectRedis, config: configRedis } = require('./services/redisService');
 
-const { auth } = require('./middleware/auth');
+const baseResponse = require('./helpers/baseResponse');
 
 app.listen(PORT, async () => {
   try {
@@ -38,9 +39,9 @@ app.use(`/${BASE_PATH}/auth`, authRoute);
 app.use(`/${BASE_PATH}/user`, auth, userRoute);
 
 app.get(`/${BASE_PATH}/test`, (req, res) => {
-  res.status(200).send({ message: 'service success to run' });
+  res.status(200).send(baseResponse.successResponse({ message: 'service success to run' }));
 });
 
 app.use((req, res) => {
-  res.status(404).send({ error: 'Not Found' });
+  res.status(404).send(baseResponse.errorResponse({ message: 'Not Found' }));
 });

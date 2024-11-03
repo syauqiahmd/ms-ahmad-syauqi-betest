@@ -19,7 +19,10 @@ const auth = async (req, res, next) => {
     req.user = user;
     next();
   } catch (err) {
-    res.status(401).send({ error: 'invalid token' });
+    res.status(401).send({
+      status: false,
+      error: 'invalid token',
+    });
   }
 };
 

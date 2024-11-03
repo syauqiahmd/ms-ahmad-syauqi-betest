@@ -1,6 +1,9 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/userModel');
 const paginationHelper = require('../helpers/paginationHelper');
+const identityHelper = require('../helpers/identityHelper');
+const redisService = require('../services/redisService');
+const { redisKey } = require('../helpers/constHelper');
 
 const addUser = async (req, res) => {
   const {
@@ -56,8 +59,17 @@ const getUserList = async (req, res) => {
 const getUserDetail = async (req, res) => {
   try {
     const { id } = req.params;
+
+    const cachedData = await redisService.getData(`${redisKey.userDetail}_${id}`);
+    if (cachedData) {
+      return res.send(cachedData);
+    }
+
     const result = await User.findById(id);
     if (!result) res.send({ data: [] });
+
+    await redisService.setData(`${redisKey.userDetail}_${id}`, { data: result });
+
     res.send({ data: result });
   } catch (err) {
     res.send(err.Error);
@@ -75,6 +87,8 @@ const updateUser = async (req, res) => {
   const { id } = req.params;
 
   try {
+    const userId = identityHelper.getUserId(req);
+    if (userId !== id) return res.send({ message: 'user only can update own data' });
     const user = await User.findByIdAndUpdate(id, {
       ...userName && { userName },
       ...password && { password: await bcrypt.hash(password, 10) },
@@ -85,6 +99,10 @@ const updateUser = async (req, res) => {
 
     if (!user) return res.send({ data: [] });
 
+    await redisService.deleteData(`${redisKey.validToken}_${id}`);
+    await redisService.deleteDataByPrefix(redisKey.userDetail);
+    await redisService.deleteDataByPrefix(redisKey.userList);
+
     res.send({ message: `success update user id : ${user._id}` });
   } catch (err) {
     res.send(err);
@@ -94,8 +112,15 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
+    const userId = identityHelper.getUserId(req);
+    if (userId === id) return res.send({ message: 'user cant delete own data' });
     const user = await User.findByIdAndDelete(id);
     if (!user) return res.send({ data: [] });
+
+    await redisService.deleteData(`${redisKey.validToken}_${id}`);
+    await redisService.deleteDataByPrefix(redisKey.userDetail);
+    await redisService.deleteDataByPrefix(redisKey.userList);
+
     res.send({ message: `success delete user id : ${user._id}` });
   } catch (err) {
     res.send(err.Error);

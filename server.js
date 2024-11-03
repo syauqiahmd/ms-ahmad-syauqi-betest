@@ -38,7 +38,7 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(`/${BASE_PATH}/auth`, authRoute);
 app.use(`/${BASE_PATH}/user`, auth, userRoute);
 
-app.get(`/${BASE_PATH}/test`, (req, res) => {
+app.get('/test', (req, res) => {
   res.status(200).send(baseResponse.successResponse({ message: 'service success to run' }));
 });
 

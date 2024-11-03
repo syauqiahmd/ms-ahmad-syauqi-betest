@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const config = {
-  url: process.env.MONGO_URI,
+  url: process.env.MONGODB_URI,
   dbName: process.env.MONGO_DB_NAME,
 };
 

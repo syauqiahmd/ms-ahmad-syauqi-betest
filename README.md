@@ -21,10 +21,11 @@
 
 ## Deployment Info :
 
+This app deployed on : https://ms-ahmad-syauqi-betest-production.up.railway.app
 This app deployed on : https://ms-ahmad-syauqi-betest.vercel.app
 
 ```
-1. Web-app : vercel.app
+1. Web-app : vercel.app || railway.app (cause there connection issue on vercel to mongodb atlas)
 2. MongoDB : cloud.mongodb.com
 3. Redis : redis-cloud.com
 ```

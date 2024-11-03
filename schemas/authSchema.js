@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 const loginSchema = Joi.object({
-  user: Joi.string().required(),
+  userName: Joi.string().required(),
   password: Joi.string().required(),
 });
 

@@ -1,9 +1,18 @@
+const bcrypt = require('bcryptjs');
+const User = require('../models/userModel');
+const { generateAuthToken } = require('../helpers/authHelper');
+
 const login = async (req, res) => {
-  const { username, password } = req.body;
+  const { userName, password } = req.body;
   try {
-    res.send({ message: 'Login successful', username, password });
+    const user = await User.findOne({ userName });
+    if (!user) throw new Error('please check your userName or password');
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) throw new Error('please check your userName or password');
+    const token = await generateAuthToken(user);
+    res.setHeader('Authorization', `Bearer ${token}`).send({ data: { token } });
   } catch (err) {
-    res.status(500).send({ error: 'Internal server error' });
+    res.send(err);
   }
 };
 

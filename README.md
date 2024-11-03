@@ -22,6 +22,7 @@
 ## Deployment Info :
 
 This app deployed on : https://ms-ahmad-syauqi-betest-production.up.railway.app
+
 This app deployed on : https://ms-ahmad-syauqi-betest.vercel.app
 
 ```

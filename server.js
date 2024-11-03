@@ -15,6 +15,8 @@ const userRoute = require('./routes/userRoute');
 const { connectMongoDb, config: configMongoDb } = require('./services/mongoDbService');
 const { connectRedis, config: configRedis } = require('./services/redisService');
 
+const { auth } = require('./middleware/auth');
+
 app.listen(PORT, async () => {
   try {
     console.log(`app base url: ${BASE_URL}`);
@@ -33,7 +35,7 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(bodyParser.json({ limit: '50mb' }));
 
 app.use(`/${BASE_PATH}/auth`, authRoute);
-app.use(`/${BASE_PATH}/user`, userRoute);
+app.use(`/${BASE_PATH}/user`, auth, userRoute);
 
 app.get(`/${BASE_PATH}/test`, (req, res) => {
   res.status(200).send({ message: 'service success to run' });

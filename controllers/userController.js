@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const User = require('../models/userModel');
 const paginationHelper = require('../helpers/paginationHelper');
 
@@ -15,7 +16,7 @@ const addUser = async (req, res) => {
       userName,
       accountNumber,
       emailAddress,
-      password,
+      password: await bcrypt.hash(password, 10),
       identityNumber,
     });
 
@@ -76,7 +77,7 @@ const updateUser = async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(id, {
       ...userName && { userName },
-      ...password && { password },
+      ...password && { password: await bcrypt.hash(password, 10) },
       ...accountNumber && { accountNumber },
       ...emailAddress && { emailAddress },
       ...identityNumber && { identityNumber },

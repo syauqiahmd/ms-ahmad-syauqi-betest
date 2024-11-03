@@ -5,13 +5,14 @@ const config = {
   dbName: process.env.MONGO_DB_NAME,
 };
 
+const clientOptions = { dbName: process.env.MONGO_DB_NAME, serverApi: { version: '1', strict: true, deprecationErrors: true } };
+
 const connectMongoDb = async () => {
   try {
-    return await mongoose.connect(config.url, {
-      dbName: config.dbName,
-    });
+    await mongoose.connect(config.url, clientOptions);
+    console.log(`MongoDB Connected to ${config.dbName}`);
   } catch (error) {
-    console.error(error);
+    console.error(`MongoDB connection error: ${error}`);
   }
 };
 

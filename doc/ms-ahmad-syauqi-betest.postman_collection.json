@@ -1,0 +1,217 @@
+{
+	"info": {
+		"_postman_id": "23463c8d-921b-455d-a1e8-1df9255e4769",
+		"name": "BTPN",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23904423"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userName\": \"user_test\",\n  \"password\": \"password1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_HOST}}/auth/login",
+					"host": [
+						"{{API_HOST}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userName\": \"user_test_3\",\n  \"emailAddress\": \"user_test_3@mail.com\",\n  \"password\": \"password3\",\n  \"accountNumber\": \"123411214\",\n  \"identityNumber\": \"1234567890123414\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_HOST}}/user",
+					"host": [
+						"{{API_HOST}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userName\": \"user_test\",\n  \"emailAddress\": \"user_test@mail.com\",\n  \"password\": \"password\",\n  \"accountNumber\": \"123411212\",\n  \"identityNumber\": \"1234567890123410\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_HOST}}/user/672744b0990e4c08ffe7cb51",
+					"host": [
+						"{{API_HOST}}"
+					],
+					"path": [
+						"user",
+						"672744b0990e4c08ffe7cb51"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_HOST}}/user",
+					"host": [
+						"{{API_HOST}}"
+					],
+					"path": [
+						"user"
+					],
+					"query": [
+						{
+							"key": "userName",
+							"value": "fdas",
+							"disabled": true
+						},
+						{
+							"key": "accountNumber",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "emailAddress",
+							"value": "test2@mail.com",
+							"disabled": true
+						},
+						{
+							"key": "identityNumber",
+							"value": "1234567890123451",
+							"disabled": true
+						},
+						{
+							"key": "page",
+							"value": "2",
+							"disabled": true
+						},
+						{
+							"key": "pageSize",
+							"value": "25",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Detail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_HOST}}/user/672744b0990e4c08ffe7cb52",
+					"host": [
+						"{{API_HOST}}"
+					],
+					"path": [
+						"user",
+						"672744b0990e4c08ffe7cb52"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User Detail",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{API_HOST}}/user/67275a7cdff63c8cbbff3c26",
+					"host": [
+						"{{API_HOST}}"
+					],
+					"path": [
+						"user",
+						"67275a7cdff63c8cbbff3c26"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzI3NDRiMDk5MGU0YzA4ZmZlN2NiNTIiLCJpYXQiOjE3MzA2MzgwNzIsImV4cCI6MTczMDY0MTY3Mn0.MDDOwjdCxpgbhjT_q_kfL8UF_vtDWm0Dk5fvVBoa-bs",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "API_HOST",
+			"value": "https://ms-ahmad-syauqi-betest-ps9til9cd-ahmad-syauqis-projects.vercel.app/api/user/api",
+			"type": "string"
+		}
+	]
+}

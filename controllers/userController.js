@@ -100,8 +100,7 @@ const updateUser = async (req, res) => {
     if (!user) return res.send({ data: [] });
 
     await redisService.deleteData(`${redisKey.validToken}_${id}`);
-    await redisService.deleteDataByPrefix(redisKey.userDetail);
-    await redisService.deleteDataByPrefix(redisKey.userList);
+    await redisService.deleteData(`${redisKey.userDetail}_${id}`);
 
     res.send({ message: `success update user id : ${user._id}` });
   } catch (err) {
@@ -118,8 +117,7 @@ const deleteUser = async (req, res) => {
     if (!user) return res.send({ data: [] });
 
     await redisService.deleteData(`${redisKey.validToken}_${id}`);
-    await redisService.deleteDataByPrefix(redisKey.userDetail);
-    await redisService.deleteDataByPrefix(redisKey.userList);
+    await redisService.deleteData(`${redisKey.userDetail}_${id}`);
 
     res.send({ message: `success delete user id : ${user._id}` });
   } catch (err) {

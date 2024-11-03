@@ -6,21 +6,30 @@
   "scripts": {
     "start": "nodemon --harmony server",
     "production": "node server",
+    "lint": "eslint . --ext .js",
+    "lint:fix": "eslint . --ext .js --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
     "mongodb": "^6.10.0",
     "mongoose": "^8.8.0",
-    "redis": "^4.7.0"
+    "redis": "^4.7.0",
+    "validator": "^13.12.0"
   },
   "devDependencies": {
-    "eslint": "^9.14.0"
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.31.0"
   }
 }

@@ -20,7 +20,7 @@ router.get(
   '/',
   checkPayload({ allowQuery: true }),
   (req, res, next) => {
-    const { error } = userSchema.getUserById.validate(req.query);
+    const { error } = userSchema.getUserList.validate(req.query);
     if (error) {
       return res.status(400).send({ error: error.details[0].message });
     }

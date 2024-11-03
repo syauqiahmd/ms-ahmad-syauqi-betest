@@ -4,11 +4,13 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon --harmony server",
+    "dev": "nodemon --harmony server",
+    "start": "node server",
     "production": "node server",
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint . --ext .js --fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "vercel-build": "npm install"
   },
   "keywords": [],
   "author": "",
@@ -31,5 +33,8 @@
     "eslint": "^8.57.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.31.0"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }

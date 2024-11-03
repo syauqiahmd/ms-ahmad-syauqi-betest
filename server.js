@@ -12,6 +12,7 @@ const BASE_URL = `http://localhost:${PORT}/${BASE_PATH}`;
 const authRoute = require('./routes/authRoute');
 const userRoute = require('./routes/userRoute');
 const { auth } = require('./middleware/auth');
+const transactionId = require('./middleware/transactionId');
 
 const { connectMongoDb, config: configMongoDb } = require('./services/mongoDbService');
 const { connectRedis, config: configRedis } = require('./services/redisService');
@@ -35,8 +36,8 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(bodyParser.json({ limit: '50mb' }));
 
-app.use(`/${BASE_PATH}/auth`, authRoute);
-app.use(`/${BASE_PATH}/user`, auth, userRoute);
+app.use(`/${BASE_PATH}/auth`, transactionId, authRoute);
+app.use(`/${BASE_PATH}/user`, transactionId, auth, userRoute);
 
 app.get('/test', (req, res) => {
   res.status(200).send(baseResponse.successResponse({ message: 'service success to run' }));
